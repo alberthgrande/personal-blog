@@ -22,8 +22,12 @@ router.post("/", async (req, res) => {
       articleContent: req.body.articleContent,
     });
 
+    if (!newArticle) {
+      return res.status(404).json({ error: "Failed to add article" });
+    }
+
     await newArticle.save();
-    res.status(201).json(newArticle);
+    res.status(201).json({ message: "Article added successfully" });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -46,7 +50,7 @@ router.put("/:id", async (req, res) => {
       return res.status(404).json({ error: "Article not found" });
     }
 
-    res.json(updatedArticle);
+    res.status(200).json({ message: "Article updated successfully" });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -68,6 +72,21 @@ router.patch("/:id", async (req, res) => {
     res.json(updatedArticle);
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+});
+
+// DELETE an article by ID
+router.delete("/:id", async (req, res) => {
+  try {
+    const deletedArticle = await Article.findByIdAndDelete(req.params.id);
+
+    if (!deletedArticle) {
+      return res.status(404).json({ error: "Article not found" });
+    }
+
+    res.status(200).json({ message: "Article deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
