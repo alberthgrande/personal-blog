@@ -18,11 +18,10 @@ const Home = () => {
     <div className="container">
       <div className="container-fluid">
         <h1>Peronale Blog</h1>
-        <table>
+        <table className="table">
           {articles.map((article) => (
             <tr key={article._id}>
               <td>
-                {" "}
                 <Link to={`/articles/${article._id}/view`}>
                   {article.articleTitle}
                 </Link>
